@@ -44,15 +44,17 @@ app.post('/login', jsonParser, function (req, res, next) {
     [req.body.username],
     function(err, users, fields) {
 
-      if (err) return res.json({status: 'error', message: err})
-      if (users.length == 0) return res.json({status: 'error', message: 'no user fond'})
+      if (err) return res.json({status: false, message: err})
+      if (users.length == 0) return res.json({status: false, message: 'no user fond'})
         
       bycrypt.compare(req.body.password, users[0].password, function(err, result) {
-        if (err) return res.json({status: 'error', message: 'login failed'})
+        if (err) return res.json({status: false, message: 'login failed'})
         if (result) {
           var token = jwt.sign({ username: users[0].username }, secret, { expiresIn: '1h' })
           return res.json({status: result, message: 'login successful', token, username: users[0].username})
-        } 
+        } else {
+          return res.json({status: false, message: 'wrong password'})
+        }
       })
     } 
   )
