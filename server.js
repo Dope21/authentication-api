@@ -20,19 +20,28 @@ const connection = mysql.createConnection({
 
 app.post('/register', jsonParser, function (req, res, next) {
 
-  bycrypt.hash(req.body.password, saltRound, (err, hash) => {
-    connection.execute(
-      `INSERT INTO users (username, password) VALUES (?, ?)`,
-      [req.body.username, hash],
-      function(err, results, fields) {
-        if (err) {
-          res.json({status: 'error', message: err})
-          return
-        }
-        res.json({status: 'ok'})
-      } 
-    )
-  })
+  connection.execute(
+    
+    `SELECT * FROM users WHERE username = ?`,
+    [req.body.username],
+    function(err, users, fields) {
+
+      if(users.length !== 0) return res.json({status: false, message: 'this usersname already in use'})
+
+      bycrypt.hash(req.body.password, saltRound, (err, hash) => {
+        `INSERT INTO users (username, password) VALUES (?, ?)`,
+        [req.body.username, hash],
+        function(err, results, fields) {
+          if (err) {
+            res.json({status: false, message: err})
+            return
+          }
+          res.json({status: results})
+        } 
+      })
+    }
+  )
+
 
 })
 
