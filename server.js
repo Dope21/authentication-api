@@ -12,10 +12,10 @@ app.use(cors())
 
 const mysql = require('mysql2')
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'my_db'
+  host: 'us-cdbr-east-05.cleardb.net',
+  user: 'b817cc1ad8dc7c',
+  password: 'ab7abf08',
+  database: 'heroku_b894a29a69400f2'
 })
 
 app.post('/register', jsonParser, function (req, res, next) {
@@ -41,7 +41,6 @@ app.post('/register', jsonParser, function (req, res, next) {
       })
     }
   )
-
 
 })
 
