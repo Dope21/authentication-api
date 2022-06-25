@@ -7,15 +7,18 @@ const bycrypt = require('bcrypt')
 const saltRound = 10
 const jwt = require('jsonwebtoken')
 const secret = 'I dont understand shit'
+const PORT = process.env.PORT || 5000
 
 app.use(cors())
+app.use(express.json())
 
 const mysql = require('mysql2')
 const connection = mysql.createConnection({
-  host: 'us-cdbr-east-05.cleardb.net',
-  user: 'b817cc1ad8dc7c',
-  password: 'ab7abf08',
-  database: 'heroku_b894a29a69400f2'
+  host: 'localhost',
+  port: '',
+  user: 'root',
+  password: '',
+  database: 'my_db'
 })
 
 app.post('/register', jsonParser, function (req, res, next) {
@@ -79,4 +82,6 @@ app.post('/authen', jsonParser, function (req, res, next) {
   }
 })
 
-app.listen(3333)
+app.listen(PORT, () => {
+  console.log('CORS-enabled web server listening on port '+PORT)
+})
